@@ -22,12 +22,16 @@ def main():
         file_content = input_file.read()
     instructions = re.finditer("^move (\d{1,2}) from (\d{1,2}) to (\d{1,2})", file_content, flags=re.MULTILINE)
     steps = (map(int, n.groups()) for n in instructions)
-    moves = collapse((repeat((s, d), n) for n, s, d in steps), base_type=tuple)
-    [move(s, d, initial) for s, d, in moves]
-    print(*initial, sep='\n')
+    [move(n, s, d, initial) for n, s, d, in steps]
+    print(*initial, sep="\n")
 
-def move(source: int, destination: int, stacks: List[deque]):
-    stacks[destination].append(stacks[source].pop())
+def move(size: int, source: int, destination: int, stacks: List[deque]):
+    temp_queue = deque()
+    for n in range(size):
+        temp_queue.append(stacks[source].pop())
+    for n in range(size):
+        stacks[destination].append(temp_queue.pop())
+
 
 
 

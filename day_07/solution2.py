@@ -1,4 +1,6 @@
+2
 from dataclasses import dataclass, field
+
 from typing import Any
 
 @dataclass
@@ -37,6 +39,10 @@ class Dir:
     def list_dirs(self):
         return [item for item in self.content.values() if isinstance(item, Dir)]
 
+
+
+total_space = 70000000
+space_needed = 30000000
 dir_list = []
 
 def main():
@@ -62,8 +68,9 @@ def main():
             case _:
                 pass
     
-
-    selected = list(filter(lambda dir : dir.get_size() <= 100_000, dir_list))
+    available_space = total_space - root.get_size()
+    needed_space = space_needed - available_space
+    selected = list(filter(lambda dir : dir.get_size() >= needed_space, dir_list))
     print(selected.sort(key=Dir.get_size))
     print(selected[0].loc, selected[0].get_size())
 
